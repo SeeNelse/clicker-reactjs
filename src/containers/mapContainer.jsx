@@ -1,13 +1,26 @@
 import React, { Component } from 'react';
-import MapCounterBtn from '../components/map/mapCounterBtn';
-import MapCounter from '../components/map/mapCounter';
+import CounterBtn from '../components/map/counterBtn';
+import Counter from '../components/map/counter';
 
 class MapContainer extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      bloodCounter: 0,
+    }
+  }
+
+  HandleCollectBloodClick  = () => {
+    console.log(1)
+    this.setState({ bloodCounter: this.state.bloodCounter + 1 });
+  }
+
+
   render() {
     return (
       <div className="map__wrapper">
-        <MapCounterBtn></MapCounterBtn>
-        <MapCounter></MapCounter>
+        <CounterBtn HandleCollectBloodClick = { this.HandleCollectBloodClick }></CounterBtn>
+        <Counter CurrentCounter = { this.state.bloodCounter }></Counter>
       </div>
     );
   }
