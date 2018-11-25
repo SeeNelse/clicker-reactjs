@@ -20,7 +20,7 @@ class MapContainer extends Component {
   render() {
     return (
       <div className="map__wrapper">
-        <Sidebar></Sidebar>
+        <Sidebar />
         <CounterBtn HandleCollectBloodClick = { this.HandleCollectBloodClick } />
         <Counter CurrentCounter = { this.state.bloodCounter } />
       </div>

@@ -1,8 +1,9 @@
 import React from 'react';
+import GoHuntingBtn from './goHuntingBtn'
 
 const Sidebar = (props) => {
   return(
-    <div className="sidebar">Сайдбар</div>
+    <div className="sidebar"><GoHuntingBtn /></div>
   )
 }
 
