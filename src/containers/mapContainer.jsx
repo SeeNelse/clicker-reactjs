@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CounterBtn from '../components/map/counterBtn';
 import Counter from '../components/map/counter';
+import Sidebar from '../components/map/sidebar';
 
 class MapContainer extends Component {
   constructor (props) {
@@ -19,8 +20,9 @@ class MapContainer extends Component {
   render() {
     return (
       <div className="map__wrapper">
-        <CounterBtn HandleCollectBloodClick = { this.HandleCollectBloodClick }></CounterBtn>
-        <Counter CurrentCounter = { this.state.bloodCounter }></Counter>
+        <Sidebar></Sidebar>
+        <CounterBtn HandleCollectBloodClick = { this.HandleCollectBloodClick } />
+        <Counter CurrentCounter = { this.state.bloodCounter } />
       </div>
     );
   }

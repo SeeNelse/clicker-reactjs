@@ -61,8 +61,15 @@ code {
 .map__wrapper {
   width: 1200px;
   height: 800px;
+  display: flex;
+  align-items: flex-start;
 }
 
 .counter {
   color: #fff;
+}
+
+.sidebar {
+  width: 150px;
+  height: 100%;
 }
