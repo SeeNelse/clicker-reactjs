@@ -1,8 +1,10 @@
 import React from 'react';
 
-const VictimSlot = (props) => {
+const VictimSlot = ({ Victim }) => {
   return(
-    <div className="victim__slot"></div>
+    <div className="victim__slot">
+      {Victim ? ` ${Victim.name} , ${Victim.age} ` : '' }
+    </div>
   )
 }
 

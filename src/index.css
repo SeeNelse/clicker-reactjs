@@ -93,6 +93,10 @@ code {
   height: 100%;
 }
 
+.sidebar__hunting-btn {
+  width: 100%;
+}
+
 .victim__wrapper {
   width: 100%;
   height: 100%;

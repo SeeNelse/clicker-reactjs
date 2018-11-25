@@ -1,8 +1,14 @@
 import React from 'react';
+import msToTime from '../../utils/timeFormatter'
 
-const GoHuntingBtn = (props) => {
+const GoHuntingBtn = ({ HandleGoHuntingClick, TimeToFinishHunting, HuntingState, IsReachMaxCount }) => {
   return(
-    <button className="sidebar__hunting-btn">Пойти на охоту</button>
+    <button 
+      className="sidebar__hunting-btn" 
+      onClick = { HandleGoHuntingClick } 
+      disabled = { HuntingState || IsReachMaxCount } >
+      { TimeToFinishHunting ? msToTime(TimeToFinishHunting) : 'Пойти на охоту' }
+    </button>
   )
 }
 
