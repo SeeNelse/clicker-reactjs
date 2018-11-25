@@ -1,8 +1,9 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 const LoginButton = ({props}) => {
   return(
-    <button className="login__google-button">Войти</button>
+    <Link to={`/map`} className="login__google-button"> Войти </Link>
   )
 }
 
