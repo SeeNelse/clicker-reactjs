@@ -3,6 +3,7 @@ import CounterBtn from '../components/map/counterBtn';
 import Counter from '../components/map/counter';
 import Sidebar from '../components/map/sidebar';
 import VictimSlotsWrapper from '../components/map/victimSlotsWrapper';
+import { CONFIG } from '../config/config';
 
 class MapContainer extends Component {
   constructor (props) {
@@ -12,7 +13,7 @@ class MapContainer extends Component {
       timeToFinishHunting: 0,
       bloodCounter: 0,
       bloodPerClick: 1,
-      victims: [],
+      victims: [CONFIG.defaultVictim],
       victimSlotsCount: 8,
     }
   }
@@ -25,19 +26,25 @@ class MapContainer extends Component {
     this.setState({ 
       hunting: true,
       timeToFinishHunting: 2000,
-      bloodPerClick: this.state.bloodPerClick + 3,
     });
     
     let huntingTimer = setInterval(() => {
       if (this.state.timeToFinishHunting === 0) {
         this.setState({
           hunting: false,
-          victims: [...this.state.victims, {name: 'Вонючий Билли', status: '', age: 27}],
+          victims: [...this.state.victims, {name: 'Вонючий Билли', status: '', age: 24}],
         });
+        this.UpdateBloodFormula();
         return clearInterval(huntingTimer);
       }
       this.setState({timeToFinishHunting: this.state.timeToFinishHunting - 1000});
     }, 1000);
+  }
+
+  UpdateBloodFormula() {
+    this.setState({
+      bloodPerClick: this.state.bloodPerClick + 5 * (this.state.victims.length + 1),
+    });
   }
 
   render() {

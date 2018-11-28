@@ -1,5 +1,6 @@
 import React from 'react';
 import GoHuntingBtn from './goHuntingBtn';
+import Upgrades from './upgrades';
 
 const Sidebar = ({ HandleGoHuntingClick, TimeToFinishHunting, HuntingState, IsReachMaxCount }) => {
   return(
@@ -10,6 +11,7 @@ const Sidebar = ({ HandleGoHuntingClick, TimeToFinishHunting, HuntingState, IsRe
         HuntingState = { HuntingState }
         IsReachMaxCount = { IsReachMaxCount }
       />
+      <Upgrades/>
     </div>
   )
 }

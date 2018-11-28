@@ -73,7 +73,7 @@ code {
 }
 
 .sidebar {
-  width: 150px;
+  width: 400px;
   height: 100%;
 }
 
@@ -90,9 +90,9 @@ code {
 }
 
 .map__wrapper {
-  width: 1200px;
+  width: 1400px;
   height: 100%;
-  padding: 40px 0 60px;
+  padding: 40px 10px 60px;
   display: flex;
   align-items: flex-start;
   position: relative;
@@ -228,6 +228,7 @@ code {
   display: flex;
   margin: 0 40px;
   z-index: 5;
+  border: 1px solid red;
 }
 
 .victim__man {
@@ -241,7 +242,9 @@ code {
 
 .victim__name {
   position: absolute;
-  width: 100%;
-  bottom: -40%;
+  width: 150%;
+  bottom: -25%;
   color: #ffffff;
+  left: 50%;
+  transform: translateX(-50%);
 }
