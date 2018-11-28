@@ -4,7 +4,7 @@ const VictimSlot = ({ Victim }) => {
   return(
     <div className="victim__slot">
       {/* {Victim ? <div></div> `${Victim.name}, ${Victim.age}` : '' } */}
-      {Victim ? <div className="victim__man"></div> : '' }
+      {Victim ? <div className="victim__man"><span className="victim__name">{Victim.name}, {Victim.age}</span></div> : '' }
     </div>
   )
 }

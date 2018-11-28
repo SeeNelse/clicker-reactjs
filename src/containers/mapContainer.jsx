@@ -11,26 +11,28 @@ class MapContainer extends Component {
       hunting: false,
       timeToFinishHunting: 0,
       bloodCounter: 0,
+      bloodPerClick: 1,
       victims: [],
       victimSlotsCount: 8,
     }
   }
 
   HandleCollectBloodClick  = () => {
-    this.setState({ bloodCounter: this.state.bloodCounter + 1 });
+    this.setState({ bloodCounter: this.state.bloodCounter + this.state.bloodPerClick });
   }
 
   HandleGoHuntingClick = () => {
     this.setState({ 
       hunting: true,
       timeToFinishHunting: 2000,
+      bloodPerClick: this.state.bloodPerClick + 3,
     });
     
     let huntingTimer = setInterval(() => {
       if (this.state.timeToFinishHunting === 0) {
         this.setState({
           hunting: false,
-          victims: [...this.state.victims, {name: 'Лакута', age: 3}],
+          victims: [...this.state.victims, {name: 'Вонючий Билли', status: '', age: 27}],
         });
         return clearInterval(huntingTimer);
       }
