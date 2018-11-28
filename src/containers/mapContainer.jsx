@@ -13,6 +13,7 @@ class MapContainer extends Component {
       timeToFinishHunting: 0,
       bloodCounter: 0,
       bloodPerClick: 1,
+      bloodFromVictim: 1,
       victims: [CONFIG.defaultVictim],
       victimSlotsCount: 8,
     }
@@ -20,6 +21,7 @@ class MapContainer extends Component {
 
   HandleCollectBloodClick  = () => {
     this.setState({ bloodCounter: this.state.bloodCounter + this.state.bloodPerClick });
+    this.SuckBloodFromAllVictims();
   }
 
   HandleGoHuntingClick = () => {
@@ -32,7 +34,7 @@ class MapContainer extends Component {
       if (this.state.timeToFinishHunting === 0) {
         this.setState({
           hunting: false,
-          victims: [...this.state.victims, {name: 'Вонючий Билли', status: '', age: 24}],
+          victims: [...this.state.victims, {name: 'Вонючий Пётр', age: 24, blood: 2000,}],
         });
         this.UpdateBloodFormula();
         return clearInterval(huntingTimer);
@@ -43,8 +45,18 @@ class MapContainer extends Component {
 
   UpdateBloodFormula() {
     this.setState({
-      bloodPerClick: this.state.bloodPerClick + 5 * (this.state.victims.length + 1),
+      bloodPerClick: this.state.bloodFromVictim * this.state.victims.length,
     });
+  }
+
+  SuckBloodFromAllVictims() {
+    let victims = this.state.victims.map((item) => {
+      item.blood = item.blood - this.state.bloodFromVictim;
+      return item;
+    });
+    this.setState({
+      victims: victims,
+    })
   }
 
   render() {
