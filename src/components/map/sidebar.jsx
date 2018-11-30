@@ -1,17 +1,9 @@
 import React from 'react';
-import GoHuntingBtn from './goHuntingBtn';
-import Upgrades from './upgrades';
 
-const Sidebar = ({ HandleGoHuntingClick, TimeToFinishHunting, HuntingState, IsReachMaxCount }) => {
+const Sidebar = (props) => {
   return(
     <div className="sidebar">
-      <GoHuntingBtn 
-        HandleGoHuntingClick = { HandleGoHuntingClick }
-        TimeToFinishHunting = { TimeToFinishHunting }
-        HuntingState = { HuntingState }
-        IsReachMaxCount = { IsReachMaxCount }
-      />
-      <Upgrades/>
+      { props.children }
     </div>
   )
 }

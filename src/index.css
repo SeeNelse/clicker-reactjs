@@ -238,6 +238,7 @@ code {
   background-repeat: no-repeat;
   background-position: 0 0px;
   position: relative;
+  cursor: pointer;
 }
 
 .victim__name {
@@ -247,4 +248,13 @@ code {
   color: #ffffff;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.sidebar-upgrades {
+  color: #fff;
+}
+
+.sidebar-upgrades-menu-item {
+  cursor: pointer;
+  border: 1px solid red;
 }
