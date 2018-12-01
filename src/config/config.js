@@ -5,6 +5,18 @@ export const CONFIG = {
     blood: 2000,
     bloodPerTick: 1,
   },
+  globalUpgrades: [
+    {
+      id: '0',
+      name: 'Автосбор крови',
+      description: 'Автоматически добывает кровь с жертвы',
+      bloodPerTick: 1,
+      duration: 1000,
+      iconUrl: 'images/upgrades/autocollect.png',
+      price: 20,
+      type: 'autoCollect',
+    },
+  ],
   victimUpgrades: [
     {
       id: '0',
@@ -13,15 +25,7 @@ export const CONFIG = {
       bloodPerTick: 5,
       iconUrl: 'images/upgrades/autocollect.png',
       price: 10,
-    },
-    {
-      id: '1',
-      name: 'Автосбор крови',
-      description: 'Автоматически добывает кровь с жертвы',
-      bloodPerTick: 1,
-      duration: 10000,
-      iconUrl: 'images/upgrades/autocollect.png',
-      price: 1000,
+      type: 'increaseClick',
     },
   ]
 }

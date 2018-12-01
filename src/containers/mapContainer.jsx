@@ -19,6 +19,7 @@ class MapContainer extends Component {
       victims: [CONFIG.defaultVictim],
       victimSlotsCount: 8,
       currentVictimMenu: null,
+      autoCollectBlood: 0,
     }
   }
 
@@ -58,9 +59,9 @@ class MapContainer extends Component {
   }
 
   // Высосать кровь с каждого
-  SuckBloodFromAllVictims() {
+  SuckBloodFromAllVictims(autoCollect) {
     let victims = this.state.victims.map((item) => {
-      item.blood = item.blood - item.bloodPerTick;
+      item.blood = item.blood - (autoCollect ? this.state.autoCollectBlood : item.bloodPerTick);
       return item;
     });
     this.setState({
@@ -70,22 +71,45 @@ class MapContainer extends Component {
 
   // Открытие меню в сайдбаре
   OpenVictimUpgradeMenu = (victimIndex) => {
-    this.setState({
-      currentVictimMenu: victimIndex === this.state.currentVictimMenu ? null : victimIndex,
-    });
+    this.setState((state) => ({
+      currentVictimMenu: victimIndex === state.currentVictimMenu ? null : victimIndex,
+    }));
   }
 
+  // Применение апгрейда
   UpgradeApply = (upgradeItem) => {
     if (upgradeItem.price > this.state.bloodCounter) {
       return;
     }
-    let victims = this.state.victims;
+    if (upgradeItem.type === 'increaseClick') {
+      this.HandleIncreaseClickType(upgradeItem);
+    }
+    if (upgradeItem.type === 'autoCollect') {
+      this.HandleAutoCollectType(upgradeItem);
+    }
+    this.UpdateBloodFormula();
+  }
+
+  HandleIncreaseClickType(upgradeItem) {
+    let victims = [...this.state.victims];
     victims[this.state.currentVictimMenu].bloodPerTick = upgradeItem.bloodPerTick;
-    this.setState((state, props) => ({
+    this.setState((state) => ({
       bloodCounter: state.bloodCounter - upgradeItem.price,
       victims: victims,
     }));
-    this.UpdateBloodFormula();
+  }
+
+  HandleAutoCollectType(upgradeItem) {
+    this.setState((state) => ({
+      bloodCounter: state.bloodCounter - upgradeItem.price,
+      autoCollectBlood: state.autoCollectBlood + upgradeItem.bloodPerTick,
+    }));
+    setInterval(() => {
+      this.setState((state) => ({
+        bloodCounter: state.bloodCounter + state.autoCollectBlood * this.state.victims.length,
+      }));
+      this.SuckBloodFromAllVictims(true);
+    }, upgradeItem.duration);
   }
 
   render() {
