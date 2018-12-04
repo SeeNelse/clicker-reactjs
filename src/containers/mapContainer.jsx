@@ -14,7 +14,7 @@ class MapContainer extends Component {
     this.state = {
       hunting: false,
       timeToFinishHunting: 0,
-      bloodCounter: 0, // кол-во крови
+      bloodCounter: 50, // кол-во крови
       bloodPerClick: 1, // кровь за клик
       victims: [CONFIG.defaultVictim],
       victimSlotsCount: 8,
