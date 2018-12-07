@@ -28,21 +28,18 @@ class MapContainer extends Component {
     }
   }
 
-  HandleCollectBloodClick  = () => { // сделать так, чтобы bloodPerClickType1 отнимал у жертвы типа 1
+  SuckBloodFromAllVictims  = (click) => {
     let allVictimsDamage = 0;
     let victims = this.state.victims.map((item) => {
-      allVictimsDamage = allVictimsDamage + this.state.victimsTypes['bloodPerClickType'+item.type];
-      item.blood = item.blood - this.state.victimsTypes['bloodPerClickType'+item.type];
+      allVictimsDamage = allVictimsDamage + (click ? this.state.victimsTypes['bloodPerClickType'+item.type] : this.state.autoCollectBlood);
+      item.blood = item.blood - (click ? this.state.victimsTypes['bloodPerClickType'+item.type] : this.state.autoCollectBlood);
       return item;
+      
     });
-    console.log(allVictimsDamage)
     this.setState((state) => ({
       victims: victims,
       bloodCounter: state.bloodCounter + allVictimsDamage,
-    }), () => {
-      console.log(allVictimsDamage);
-      allVictimsDamage = 0;
-    });
+    }));
   }
 
   // Функция охоты
@@ -56,7 +53,7 @@ class MapContainer extends Component {
       if (this.state.timeToFinishHunting === 0) {
         this.setState({
           hunting: false,
-          victims: [...this.state.victims, {name: 'Вонючий Пётр', age: 24, blood: 2000, type: 1, damage: 0,}],
+          victims: [...this.state.victims, {name: 'Вонючий Пётр', age: 24, blood: 2000, type: 1,}],
         });
         return clearInterval(huntingTimer);
       }
@@ -106,7 +103,7 @@ class MapContainer extends Component {
       this.setState((state) => ({
         bloodCounter: state.bloodCounter + state.autoCollectBlood * this.state.victims.length,
       }));
-      this.SuckBloodFromAllVictims(true);
+      this.SuckBloodFromAllVictims(false)
     }, upgradeItem.duration);
   }
 
@@ -137,7 +134,7 @@ class MapContainer extends Component {
           SlotItemsCount = { this.state.victimSlotsCount } 
           Victims = { this.state.victims }
         />
-        <CounterBtn HandleCollectBloodClick = { this.HandleCollectBloodClick } HuntingState = { this.state.hunting }/>
+        <CounterBtn SuckBloodFromAllVictims = { this.SuckBloodFromAllVictims } HuntingState = { this.state.hunting }/>
         <Counter CurrentCounter = { this.state.bloodCounter } />
       </div>
     );
