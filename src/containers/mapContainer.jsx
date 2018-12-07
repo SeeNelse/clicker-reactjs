@@ -14,18 +14,35 @@ class MapContainer extends Component {
     this.state = {
       hunting: false,
       timeToFinishHunting: 0,
-      bloodCounter: 50, // кол-во крови
+      bloodCounter: 100, // кол-во крови
       bloodPerClick: 1, // кровь за клик
       victims: [CONFIG.defaultVictim],
       victimSlotsCount: 8,
       currentVictimMenu: null,
       autoCollectBlood: 0,
+      victimsTypes: {
+        bloodPerClickType1: 1,
+        bloodPerClickType2: 1,
+      },
+      upgradeCouner: 0,
     }
   }
 
-  HandleCollectBloodClick  = () => {
-    this.setState({ bloodCounter: this.state.bloodCounter + this.state.bloodPerClick });
-    this.SuckBloodFromAllVictims();
+  HandleCollectBloodClick  = () => { // сделать так, чтобы bloodPerClickType1 отнимал у жертвы типа 1
+    let allVictimsDamage = 0;
+    let victims = this.state.victims.map((item) => {
+      allVictimsDamage = allVictimsDamage + this.state.victimsTypes['bloodPerClickType'+item.type];
+      item.blood = item.blood - this.state.victimsTypes['bloodPerClickType'+item.type];
+      return item;
+    });
+    console.log(allVictimsDamage)
+    this.setState((state) => ({
+      victims: victims,
+      bloodCounter: state.bloodCounter + allVictimsDamage,
+    }), () => {
+      console.log(allVictimsDamage);
+      allVictimsDamage = 0;
+    });
   }
 
   // Функция охоты
@@ -39,34 +56,12 @@ class MapContainer extends Component {
       if (this.state.timeToFinishHunting === 0) {
         this.setState({
           hunting: false,
-          victims: [...this.state.victims, {name: 'Вонючий Пётр', age: 24, blood: 2000, bloodPerTick: 1,}],
+          victims: [...this.state.victims, {name: 'Вонючий Пётр', age: 24, blood: 2000, type: 1, damage: 0,}],
         });
-        this.UpdateBloodFormula();
         return clearInterval(huntingTimer);
       }
       this.setState({timeToFinishHunting: this.state.timeToFinishHunting - 1000});
     }, 1000);
-  }
-
-  // При добавлении новой жертвы пересчитать кровь за клик
-  UpdateBloodFormula() {
-    let sum = this.state.victims.reduce((sum, current) => {
-      return sum + current.bloodPerTick;
-    }, 0);
-    this.setState({
-      bloodPerClick: sum,
-    });
-  }
-
-  // Высосать кровь с каждого
-  SuckBloodFromAllVictims(autoCollect) {
-    let victims = this.state.victims.map((item) => {
-      item.blood = item.blood - (autoCollect ? this.state.autoCollectBlood : item.bloodPerTick);
-      return item;
-    });
-    this.setState({
-      victims: victims,
-    })
   }
 
   // Открытие меню в сайдбаре
@@ -82,23 +77,26 @@ class MapContainer extends Component {
       return;
     }
     if (upgradeItem.type === 'increaseClick') {
-      this.HandleIncreaseClickType(upgradeItem);
+      this.HandleIncreaseClickType(upgradeItem, upgradeItem.forVictimType);
     }
     if (upgradeItem.type === 'autoCollect') {
       this.HandleAutoCollectType(upgradeItem);
     }
-    this.UpdateBloodFormula();
   }
 
-  HandleIncreaseClickType(upgradeItem) {
-    let victims = [...this.state.victims];
-    victims[this.state.currentVictimMenu].bloodPerTick = upgradeItem.bloodPerTick;
+  // функция апгрейда на увеличение добычи по клику
+  HandleIncreaseClickType(upgradeItem, type) {
+    let tempVictimsTypes = Object.assign({}, this.state.victimsTypes);
+    tempVictimsTypes['bloodPerClickType'+type] = upgradeItem.bloodPerTick;
     this.setState((state) => ({
       bloodCounter: state.bloodCounter - upgradeItem.price,
-      victims: victims,
-    }));
+      victimsTypes: tempVictimsTypes,
+    }), () => {
+      this.updateUpgrades(upgradeItem);
+    });
   }
 
+  // функция апгрейда автодобычи
   HandleAutoCollectType(upgradeItem) {
     this.setState((state) => ({
       bloodCounter: state.bloodCounter - upgradeItem.price,
@@ -110,6 +108,16 @@ class MapContainer extends Component {
       }));
       this.SuckBloodFromAllVictims(true);
     }, upgradeItem.duration);
+  }
+
+  updateUpgrades(upgradeItem) {
+    // upgradeItem.updateLevel(upgradeItem);
+    upgradeItem.level = upgradeItem.level + 1;
+    upgradeItem.price = upgradeItem.price * 3;
+    upgradeItem.bloodPerTick = upgradeItem.bloodPerTick * 2;
+    this.setState((state) => ({
+      upgradeCouner: state.upgradeCouner++,
+    }));
   }
 
   render() {

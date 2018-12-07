@@ -7,7 +7,7 @@ const Upgrades = ({ CurrentVictimMenu, UpgradeApply }) => {
     <div className="sidebar-upgrades">
       { CurrentVictimMenu === null ? 
         <GlobalUpgradesMenu UpgradeApply = { UpgradeApply } /> : 
-        <VictimUpgradesMenu CurrentVictimMenu = { CurrentVictimMenu } UpgradeApply = { UpgradeApply }/>
+        <VictimUpgradesMenu CurrentVictimMenu = { CurrentVictimMenu } />
       }
     </div>
   )

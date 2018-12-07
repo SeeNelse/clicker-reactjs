@@ -2,7 +2,7 @@ import React from 'react';
 import Upgrade from './upgrade';
 import { CONFIG } from '../../config/config';
 
-const GlobalUpgradesMenu = ({ CurrentVictimMenu, UpgradeApply }) => {
+const GlobalUpgradesMenu = ({ UpgradeApply }) => {
   return(
     <div className="sidebar-upgrades-menu">
       <div className="sidebar-upgrades-menu__name"> Меню </div>
