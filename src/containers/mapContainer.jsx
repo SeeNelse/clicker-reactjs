@@ -28,7 +28,7 @@ class MapContainer extends Component {
     }
   }
 
-  SuckBloodFromAllVictims  = (click) => {
+  SuckBloodFromAllVictims = (click) => {
     let allVictimsDamage = 0;
     let victims = this.state.victims.map((item) => {
       allVictimsDamage = allVictimsDamage + (click ? this.state.victimsTypes['bloodPerClickType'+item.type] : this.state.autoCollectBlood);
@@ -44,6 +44,9 @@ class MapContainer extends Component {
 
   // Функция охоты
   HandleGoHuntingClick = () => {
+    if (this.state.victims.length === this.state.victimSlotsCount) {
+      return;
+    }
     this.setState({ 
       hunting: true,
       timeToFinishHunting: 2000,
@@ -64,8 +67,10 @@ class MapContainer extends Component {
   // Открытие меню в сайдбаре
   OpenVictimUpgradeMenu = (victimIndex) => {
     this.setState((state) => ({
-      currentVictimMenu: victimIndex === state.currentVictimMenu ? null : victimIndex,
-    }));
+      currentVictimMenu: state.currentVictimMenu ? null : victimIndex, // пофиксить
+    }), () => {
+      console.log(victimIndex, this.state.currentVictimMenu)
+    });
   }
 
   // Применение апгрейда
@@ -79,9 +84,12 @@ class MapContainer extends Component {
     if (upgradeItem.type === 'autoCollect') {
       this.HandleAutoCollectType(upgradeItem);
     }
+    if (upgradeItem.type === 'autoHunting') {
+      this.AutoHutnig(upgradeItem);
+    }
   }
 
-  // функция апгрейда на увеличение добычи по клику
+  // Функция апгрейда на увеличение добычи по клику
   HandleIncreaseClickType(upgradeItem, type) {
     let tempVictimsTypes = Object.assign({}, this.state.victimsTypes);
     tempVictimsTypes['bloodPerClickType'+type] = upgradeItem.bloodPerTick;
@@ -93,22 +101,34 @@ class MapContainer extends Component {
     });
   }
 
-  // функция апгрейда автодобычи
+  // Функция апгрейда автодобычи крови, таймер автодобычи
   HandleAutoCollectType(upgradeItem) {
     this.setState((state) => ({
       bloodCounter: state.bloodCounter - upgradeItem.price,
-      autoCollectBlood: state.autoCollectBlood + upgradeItem.bloodPerTick,
-    }));
-    setInterval(() => {
-      this.setState((state) => ({
-        bloodCounter: state.bloodCounter + state.autoCollectBlood * this.state.victims.length,
-      }));
+      autoCollectBlood: upgradeItem.bloodPerTick,
+    }), () => {
+      this.updateUpgrades(upgradeItem);
+    });
+    clearInterval(this.autoCollectTimer);
+    this.autoCollectTimer = setInterval(() => {
       this.SuckBloodFromAllVictims(false)
     }, upgradeItem.duration);
   }
 
+  AutoHutnig = (upgradeItem) => { // сделать автоохоту
+    this.setState((state) => ({
+      bloodCounter: state.bloodCounter - upgradeItem.price,
+    }), () => {
+      this.updateUpgrades(upgradeItem);
+    });
+    clearInterval(this.autoHutningTimer);
+    this.autoHutningTimer = setInterval(() => {
+      console.log(upgradeItem.duration)
+      this.HandleGoHuntingClick();
+    }, upgradeItem.duration);
+  }
+
   updateUpgrades(upgradeItem) {
-    // upgradeItem.updateLevel(upgradeItem);
     upgradeItem.level = upgradeItem.level + 1;
     upgradeItem.price = upgradeItem.price * 3;
     upgradeItem.bloodPerTick = upgradeItem.bloodPerTick * 2;
@@ -127,7 +147,10 @@ class MapContainer extends Component {
             HuntingState = { this.state.hunting } 
             IsReachMaxCount = { this.state.victims.length === this.state.victimSlotsCount }
           />
-          <Upgrades CurrentVictimMenu = { this.state.currentVictimMenu } UpgradeApply = { this.UpgradeApply }/>
+          <Upgrades 
+            CurrentVictimMenu = { this.state.currentVictimMenu }
+            UpgradeApply = { this.UpgradeApply }
+          />
         </Sidebar>
         <VictimSlotsWrapper 
           OpenVictimUpgradeMenu = { this.OpenVictimUpgradeMenu } 

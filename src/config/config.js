@@ -4,13 +4,12 @@ export const CONFIG = {
     age: 26,
     blood: 2000,
     type: 1,
-    damage: 0,
   },
   globalUpgrades: [
     {
       id: 0,
       name: 'Автосбор крови',
-      description: 'Автоматически добывает кровь с жертвы',
+      description: 'Увеличивает добычу крови с жертвы',
       bloodPerTick: 2,
       duration: 1000,
       iconUrl: 'images/upgrades/autocollect.png',
@@ -20,6 +19,16 @@ export const CONFIG = {
     },
     {
       id: 1,
+      name: 'Автоохота',
+      description: 'Позволяет автоматически отправлять на охоту прислужников',
+      iconUrl: 'images/upgrades/autocollect.png',
+      duration: 8000,
+      price: 10,
+      type: 'autoHunting',
+      level: 1,
+    },
+    {
+      id: 2,
       name: 'Увеличенная добыча типа 1',
       description: 'Увеличивает добычу крови с жертвы',
       bloodPerTick: 6,
@@ -30,7 +39,7 @@ export const CONFIG = {
       forVictimType: 1,
     },
     {
-      id: 2,
+      id: 3,
       name: 'Увеличенная добыча типа 2',
       description: 'Увеличивает добычу крови с жертвы',
       bloodPerTick: 6,
