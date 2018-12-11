@@ -150,8 +150,21 @@ class MapContainer extends Component {
 
   render() {
     return (
-      <div className="map__wrapper">
-        <Sidebar>
+      <div className="map-wrapper">
+        <div className="map-top">
+          <Sidebar>
+            <Upgrades 
+              CurrentVictimMenu = { this.state.currentVictimMenu }
+              UpgradeApply = { this.UpgradeApply }
+            />
+          </Sidebar>
+          <VictimSlotsWrapper 
+            OpenVictimUpgradeMenu = { this.OpenVictimUpgradeMenu } 
+            SlotItemsCount = { this.state.victimSlotsCount } 
+            Victims = { this.state.victims }
+          />
+        </div>
+        <div className="map-bot">
           <GoHuntingBtn 
             HandleGoHuntingClick = { this.HandleGoHuntingClick } 
             TimeToFinishHunting = { this.state.timeToFinishHunting } 
@@ -159,18 +172,9 @@ class MapContainer extends Component {
             AutoHuntingState = { this.state.autoHunting }
             IsReachMaxCount = { this.state.victims.length === this.state.victimSlotsCount }
           />
-          <Upgrades 
-            CurrentVictimMenu = { this.state.currentVictimMenu }
-            UpgradeApply = { this.UpgradeApply }
-          />
-        </Sidebar>
-        <VictimSlotsWrapper 
-          OpenVictimUpgradeMenu = { this.OpenVictimUpgradeMenu } 
-          SlotItemsCount = { this.state.victimSlotsCount } 
-          Victims = { this.state.victims }
-        />
-        <CounterBtn SuckBloodFromAllVictims = { this.SuckBloodFromAllVictims } HuntingState = { this.state.hunting }/>
-        <Counter CurrentCounter = { this.state.bloodCounter } />
+          <CounterBtn SuckBloodFromAllVictims = { this.SuckBloodFromAllVictims } HuntingState = { this.state.hunting }/>
+          <Counter CurrentCounter = { this.state.bloodCounter } />
+        </div>
       </div>
     );
   }

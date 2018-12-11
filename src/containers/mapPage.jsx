@@ -4,7 +4,7 @@ import MapContainer from './mapContainer';
 class MapPage extends Component {
   render() {
     return (
-      <div className="map__main">
+      <div className="map-main">
         <MapContainer></MapContainer>
       </div>
     );

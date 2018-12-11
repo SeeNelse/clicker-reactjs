@@ -2,7 +2,7 @@ import React from 'react';
 
 const Counter = ({CurrentCounter}) => {
   return(
-    <h4 className="counter">{ CurrentCounter }</h4>
+    <h4 className="map-bot__counter">{ CurrentCounter }</h4>
   )
 }
 
