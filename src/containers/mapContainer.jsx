@@ -31,11 +31,14 @@ class MapContainer extends Component {
 
   SuckBloodFromAllVictims = (click) => {
     let allVictimsDamage = 0;
-    let victims = this.state.victims.map((item) => {
+    let victims = this.state.victims.filter((item, i) => {
       allVictimsDamage = allVictimsDamage + (click ? this.state.victimsTypes['bloodPerClickType'+item.type] : this.state.autoCollectBlood);
       item.blood = item.blood - (click ? this.state.victimsTypes['bloodPerClickType'+item.type] : this.state.autoCollectBlood);
-      return item;
-      
+      if (item.blood <= 0) {
+        console.log('жертва номер '+i+' умерла');
+        // victims.splice(victims.indexOf(i), 1);
+      }
+      return item.blood > 0;
     });
     this.setState((state) => ({
       victims: victims,
@@ -65,7 +68,7 @@ class MapContainer extends Component {
         this.setState({
           hunting: false,
           autoHunting: false,
-          victims: [...this.state.victims, {name: 'Вонючий Пётр', age: 24, blood: 2000, type: 1,}],
+          victims: [...this.state.victims, {name: 'Вонючий Пётр', age: 24, blood: 4, type: 1,}],
         });
         return clearInterval(huntingTimer);
       }

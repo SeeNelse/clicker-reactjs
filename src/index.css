@@ -310,7 +310,8 @@ code {
 }
 
 .sidebar-upgrades-menu-item__right {
-  padding-left: 5px;
+  padding-left: 10px;
+  width: 100%;
 }
 
 .sidebar-upgrades-menu-item__name {
