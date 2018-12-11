@@ -13,6 +13,7 @@ class MapContainer extends Component {
     super(props);
     this.state = {
       hunting: false,
+      autoHunting: false,
       timeToFinishHunting: 0,
       bloodCounter: 100, // кол-во крови
       bloodPerClick: 1, // кровь за клик
@@ -43,19 +44,27 @@ class MapContainer extends Component {
   }
 
   // Функция охоты
-  HandleGoHuntingClick = () => {
-    if (this.state.victims.length === this.state.victimSlotsCount) {
+  HandleGoHuntingClick = (notAutoHunting) => {
+    if (this.state.victims.length === this.state.victimSlotsCount || this.state.hunting) {
       return;
     }
-    this.setState({ 
-      hunting: true,
-      timeToFinishHunting: 2000,
-    });
+    if (notAutoHunting) {
+      this.setState({ 
+        hunting: true,
+        timeToFinishHunting: 2000,
+      });
+    } else {
+      this.setState({ 
+        autoHunting: true,
+        timeToFinishHunting: 2000,
+      });
+    }
     
     let huntingTimer = setInterval(() => {
       if (this.state.timeToFinishHunting === 0) {
         this.setState({
           hunting: false,
+          autoHunting: false,
           victims: [...this.state.victims, {name: 'Вонючий Пётр', age: 24, blood: 2000, type: 1,}],
         });
         return clearInterval(huntingTimer);
@@ -67,9 +76,9 @@ class MapContainer extends Component {
   // Открытие меню в сайдбаре
   OpenVictimUpgradeMenu = (victimIndex) => {
     this.setState((state) => ({
-      currentVictimMenu: state.currentVictimMenu ? null : victimIndex, // пофиксить
+      currentVictimMenu: victimIndex === state.currentVictimMenu ? null : victimIndex, // пофиксить
     }), () => {
-      console.log(victimIndex, this.state.currentVictimMenu)
+      // console.log(victimIndex, this.state.currentVictimMenu)
     });
   }
 
@@ -115,7 +124,8 @@ class MapContainer extends Component {
     }, upgradeItem.duration);
   }
 
-  AutoHutnig = (upgradeItem) => { // сделать автоохоту
+  // Функция автоохоты
+  AutoHutnig = (upgradeItem) => {
     this.setState((state) => ({
       bloodCounter: state.bloodCounter - upgradeItem.price,
     }), () => {
@@ -123,11 +133,11 @@ class MapContainer extends Component {
     });
     clearInterval(this.autoHutningTimer);
     this.autoHutningTimer = setInterval(() => {
-      console.log(upgradeItem.duration)
-      this.HandleGoHuntingClick();
+      this.HandleGoHuntingClick(false);
     }, upgradeItem.duration);
   }
 
+  // Функция обновления апгрейда
   updateUpgrades(upgradeItem) {
     upgradeItem.level = upgradeItem.level + 1;
     upgradeItem.price = upgradeItem.price * 3;
@@ -145,6 +155,7 @@ class MapContainer extends Component {
             HandleGoHuntingClick = { this.HandleGoHuntingClick } 
             TimeToFinishHunting = { this.state.timeToFinishHunting } 
             HuntingState = { this.state.hunting } 
+            AutoHuntingState = { this.state.autoHunting }
             IsReachMaxCount = { this.state.victims.length === this.state.victimSlotsCount }
           />
           <Upgrades 
