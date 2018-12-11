@@ -16,7 +16,6 @@ class MapContainer extends Component {
       autoHunting: false,
       timeToFinishHunting: 0,
       bloodCounter: 100, // кол-во крови
-      bloodPerClick: 1, // кровь за клик
       victims: [CONFIG.defaultVictim],
       victimSlotsCount: 8,
       currentVictimMenu: null,
@@ -32,12 +31,12 @@ class MapContainer extends Component {
   SuckBloodFromAllVictims = (click) => {
     let allVictimsDamage = 0;
     let victims = this.state.victims.filter((item, i) => {
-      allVictimsDamage = allVictimsDamage + (click ? this.state.victimsTypes['bloodPerClickType'+item.type] : this.state.autoCollectBlood);
-      item.blood = item.blood - (click ? this.state.victimsTypes['bloodPerClickType'+item.type] : this.state.autoCollectBlood);
-      if (item.blood <= 0) {
-        console.log('жертва номер '+i+' умерла');
-        // victims.splice(victims.indexOf(i), 1);
+      if (item.blood < this.state.victimsTypes['bloodPerClickType'+item.type]) { // если дамага больше, чем хп у жертвы
+        allVictimsDamage = allVictimsDamage + item.blood;
+      } else {
+        allVictimsDamage = allVictimsDamage + (click ? this.state.victimsTypes['bloodPerClickType'+item.type] : this.state.autoCollectBlood);
       }
+      item.blood = item.blood - (click ? this.state.victimsTypes['bloodPerClickType'+item.type] : this.state.autoCollectBlood);
       return item.blood > 0;
     });
     this.setState((state) => ({
