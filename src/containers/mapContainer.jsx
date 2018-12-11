@@ -121,6 +121,7 @@ class MapContainer extends Component {
     clearInterval(this.autoCollectTimer);
     this.autoCollectTimer = setInterval(() => {
       this.SuckBloodFromAllVictims(false)
+      // console.log(Number(upgradeItem.duration+'000'))
     }, upgradeItem.duration);
   }
 

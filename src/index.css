@@ -270,6 +270,7 @@ code {
   justify-content: space-between;
   align-items: center;
   padding: 10px 5px;
+  margin-bottom: 5px;
 }
 
 .sidebar-upgrades-menu-item__left {
@@ -300,14 +301,14 @@ code {
   font-size: 14px;
 }
 
-.sidebar-upgrades-menu-item__info {
+.sidebar-upgrades-menu-item-info {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   position: relative;
 }
 
-.sidebar-upgrades-menu-item__info span {
+.sidebar-upgrades-menu-item-info span {
   position: relative;
 }
 
