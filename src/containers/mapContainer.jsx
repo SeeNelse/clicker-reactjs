@@ -30,7 +30,7 @@ class MapContainer extends Component {
 
   SuckBloodFromAllVictims = (click) => {
     let allVictimsDamage = 0;
-    let victims = this.state.victims.filter((item, i) => {
+    let victims = this.state.victims.filter((item) => {
       if (item.blood < this.state.victimsTypes['bloodPerClickType'+item.type]) { // если дамага больше, чем хп у жертвы
         allVictimsDamage = allVictimsDamage + item.blood;
       } else {
@@ -76,12 +76,21 @@ class MapContainer extends Component {
   }
 
   // Открытие меню в сайдбаре
-  OpenVictimUpgradeMenu = (victimIndex) => {
-    this.setState((state) => ({
-      currentVictimMenu: victimIndex === state.currentVictimMenu ? null : victimIndex, // пофиксить
-    }), () => {
-      // console.log(victimIndex, this.state.currentVictimMenu)
-    });
+  OpenVictimUpgradeMenu = (event, victimIndex) => {
+    while (event.target !== document.querySelector('.map-top')) {
+      if (event.target.classList.contains('victim__man')) {
+        let key = +event.target.dataset.key
+        this.setState((state) => ({
+          currentVictimMenu: key === state.currentVictimMenu ? null : key,
+        }));
+        return;
+      } else {
+        this.setState((state) => ({
+          currentVictimMenu: null
+        }));
+      }
+      event.target = event.target.parentNode;
+    }
   }
 
   // Применение апгрейда
@@ -123,7 +132,6 @@ class MapContainer extends Component {
     clearInterval(this.autoCollectTimer);
     this.autoCollectTimer = setInterval(() => {
       this.SuckBloodFromAllVictims(false)
-      // console.log(Number(upgradeItem.duration+'000'))
     }, upgradeItem.duration);
   }
 

@@ -3,7 +3,7 @@ import VictimSlot from './victimSlot';
 
 const VictimSlotsWrapper = ({ SlotItemsCount, Victims, OpenVictimUpgradeMenu }) => {
   return(
-    <div className="victim-background">
+    <div className="victim-background" onClick = { OpenVictimUpgradeMenu }>
       <div className="victim-background__top"></div>
       <div className="victim-background__right-top"></div>
       <div className="victim-background__right"></div>
@@ -14,7 +14,7 @@ const VictimSlotsWrapper = ({ SlotItemsCount, Victims, OpenVictimUpgradeMenu }) 
       <div className="victim-background__left-top"></div>
       <div className="victim-background__floor"></div>
       <div className="victim__wrapper">
-        { [...Array(SlotItemsCount)].map((e, i) => <VictimSlot key={ i } VictimIndex = { i } OpenVictimUpgradeMenu = { OpenVictimUpgradeMenu } Victim = { Victims[i] } />) }
+        { [...Array(SlotItemsCount)].map((e, i) => <VictimSlot key={ i } VictimIndex = { i } Victim = { Victims[i] } />) }
       </div>
     </div>
   )

@@ -9,8 +9,8 @@ const Upgrade = (props) => {
         <p className="sidebar-upgrades-menu-item__description">{ props.Item.description }</p>
         <div className="sidebar-upgrades-menu-item-info">
           <span className="sidebar-upgrades-menu-item-info__description">
-            { props.Item.type === 'autoCollect' ? props.Item.bloodPerTick + ' крови раз в ' + props.Item.duration + ' секунд' : '' }
-            { props.Item.type === 'autoHunting' ? 'Гаргульи ходят на охоту каждые ' + props.Item.duration + ' секунд' : '' }
+            { props.Item.type === 'autoCollect' ? props.Item.bloodPerTick + ' крови раз в ' + props.Item.duration.toString().slice(0, -3) + ' секунд' : '' }
+            { props.Item.type === 'autoHunting' ? 'Гаргульи ходят на охоту каждые ' + props.Item.duration.toString().slice(0, -3) + ' секунд' : '' }
             { props.Item.type === 'increaseClick' ? props.Item.bloodPerTick + ' крови за клик' : '' }
           </span>
           <span className="sidebar-upgrades-menu-item-info__level">Уровень: { props.Item.level }</span>
