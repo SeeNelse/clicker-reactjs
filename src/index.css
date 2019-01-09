@@ -104,18 +104,25 @@ code {
 
 .map-bot__counter {
   color: #fff;
-  /* position: absolute; */
   margin: 0;
-  /* bottom: 20px; */
-  /* left: 140px; */
   font-size: 35px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.map-bot__counter-blood {
+  width: 30px;
+  margin-right: 5px;
+}
+
+.map-bot__counter-meat {
+  width: 30px;
+  margin-left: 30px;
+  margin-right: 5px;
 }
 
 .map-bot__counter-btn {
-  /* position: absolute; */
-  /* bottom: 20px; */
-  /* left: 50%; */
-  /* transform: translateX(-50%); */
   font-size: 24px;
   margin: 0 25px;
 }

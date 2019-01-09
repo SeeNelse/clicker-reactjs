@@ -20,6 +20,7 @@ class MapContainer extends Component {
       victimSlotsCount: 8,
       currentVictimMenu: null,
       autoCollectBlood: 0,
+      victimMeat: 0,
       victimsTypes: {
         bloodPerClickType1: 1,
         bloodPerClickType2: 1,
@@ -33,10 +34,14 @@ class MapContainer extends Component {
     let victims = this.state.victims.filter((item) => {
       if (item.blood < this.state.victimsTypes['bloodPerClickType'+item.type]) { // если дамага больше, чем хп у жертвы
         allVictimsDamage = allVictimsDamage + item.blood;
+        this.state.victimMeat = this.state.victimMeat + item.meat;
       } else {
         allVictimsDamage = allVictimsDamage + (click ? this.state.victimsTypes['bloodPerClickType'+item.type] : this.state.autoCollectBlood);
       }
       item.blood = item.blood - (click ? this.state.victimsTypes['bloodPerClickType'+item.type] : this.state.autoCollectBlood);
+      if (item.blood === 0) {
+        this.state.victimMeat = this.state.victimMeat + item.meat;
+      }
       return item.blood > 0;
     });
     this.setState((state) => ({
@@ -67,7 +72,7 @@ class MapContainer extends Component {
         this.setState({
           hunting: false,
           autoHunting: false,
-          victims: [...this.state.victims, {name: 'Вонючий Пётр', age: 24, blood: 4, type: 1,}],
+          victims: [...this.state.victims, {name: 'Вонючий Пётр', age: 24, blood: 200, type: 1, meat: 5,}],
         });
         return clearInterval(huntingTimer);
       }
@@ -183,7 +188,8 @@ class MapContainer extends Component {
             IsReachMaxCount = { this.state.victims.length === this.state.victimSlotsCount }
           />
           <CounterBtn SuckBloodFromAllVictims = { this.SuckBloodFromAllVictims } HuntingState = { this.state.hunting }/>
-          <Counter CurrentCounter = { this.state.bloodCounter } />
+          <Counter CurrentCounter = { this.state.bloodCounter } CounterType = { true } />
+          <Counter CurrentCounter = { this.state.victimMeat } CounterType = { false } />
         </div>
       </div>
     );
