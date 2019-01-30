@@ -14,6 +14,8 @@ class MapContainer extends Component {
     this.state = {
       hunting: false,
       autoHunting: false,
+      butcher: false,
+      butcherBooty: 0,
       timeToFinishHunting: 0,
       bloodCounter: 100, // кол-во крови
       victims: [CONFIG.defaultVictim],
@@ -31,16 +33,22 @@ class MapContainer extends Component {
 
   SuckBloodFromAllVictims = (click) => {
     let allVictimsDamage = 0;
-    let victims = this.state.victims.filter((item) => {
+    let victims = this.state.victims.filter((item, i) => {
       if (item.blood < this.state.victimsTypes['bloodPerClickType'+item.type]) { // если дамага больше, чем хп у жертвы
         allVictimsDamage = allVictimsDamage + item.blood;
-        this.state.victimMeat = this.state.victimMeat + item.meat;
+        this.setState((state) => ({
+          victimMeat: this.state.victimMeat + item.meat + this.state.butcherBooty,
+        }), () => {
+          // console.log(this.state.victimMeat);
+        });;
       } else {
         allVictimsDamage = allVictimsDamage + (click ? this.state.victimsTypes['bloodPerClickType'+item.type] : this.state.autoCollectBlood);
       }
       item.blood = item.blood - (click ? this.state.victimsTypes['bloodPerClickType'+item.type] : this.state.autoCollectBlood);
       if (item.blood === 0) {
-        this.state.victimMeat = this.state.victimMeat + item.meat;
+        this.setState((state) => ({ // добавить мясо 
+          victimMeat: this.state.victimMeat + item.meat + this.state.butcherBooty,
+        }));
       }
       return item.blood > 0;
     });
@@ -49,6 +57,7 @@ class MapContainer extends Component {
       bloodCounter: state.bloodCounter + allVictimsDamage,
     }));
   }
+
 
   // Функция охоты
   HandleGoHuntingClick = (notAutoHunting) => {
@@ -72,7 +81,7 @@ class MapContainer extends Component {
         this.setState({
           hunting: false,
           autoHunting: false,
-          victims: [...this.state.victims, {name: 'Вонючий Пётр', age: 24, blood: 200, type: 1, meat: 5,}],
+          victims: [...this.state.victims, {name: 'Вонючий Пётр', iconUrl: 'images/victims/victim-type-1.png', age: 24, blood: 200, type: 1, meat: 1,}],
         });
         return clearInterval(huntingTimer);
       }
@@ -112,6 +121,9 @@ class MapContainer extends Component {
     if (upgradeItem.type === 'autoHunting') {
       this.AutoHutnig(upgradeItem);
     }
+    if (upgradeItem.type === 'meatExtraction') {
+      this.MeatExtraction(upgradeItem);
+    }
   }
 
   // Функция апгрейда на увеличение добычи по клику
@@ -140,7 +152,7 @@ class MapContainer extends Component {
     }, upgradeItem.duration);
   }
 
-  // Функция автоохоты
+  // Функция апгрейда автоохоты
   AutoHutnig = (upgradeItem) => {
     this.setState((state) => ({
       bloodCounter: state.bloodCounter - upgradeItem.price,
@@ -151,6 +163,18 @@ class MapContainer extends Component {
     this.autoHutningTimer = setInterval(() => {
       this.HandleGoHuntingClick(false);
     }, upgradeItem.duration);
+  }
+
+  // Функция апгрейда мясника
+  MeatExtraction = (upgradeItem) => {
+    this.setState((state) => ({
+      bloodCounter: state.bloodCounter - upgradeItem.price,
+      butcher: true,
+      butcherBooty: state.butcherBooty + upgradeItem.butcherBooty,
+    }), () => {
+      this.updateUpgrades(upgradeItem);
+    });
+
   }
 
   // Функция обновления апгрейда
