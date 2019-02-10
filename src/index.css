@@ -1,5 +1,13 @@
+@font-face {
+  font-family: "bahnschrift";
+  src: url("/fonts/bahnschrift.ttf");
+  font-style: normal;
+  font-weight: 300;
+}
+
 * {
   box-sizing: border-box;
+  font-family: bahnschrift;
 }
 
 html {
@@ -100,6 +108,11 @@ code {
 
 .map-bot__hunting-btn {
   font-size: 24px;
+}
+
+.map-bot__counters {
+  display: flex;
+  flex-direction: row;
 }
 
 .map-bot__counter {
@@ -272,18 +285,43 @@ code {
 
 .victim__name {
   position: absolute;
-  width: 150%;
-  top: 100%;
+  width: 200%;
+  text-align: center;
+  top: 105%;
   color: #ffffff;
   left: 50%;
   transform: translateX(-50%);
 }
 
+.victim__name img {
+  width: 15px;
+  margin-bottom: -4px;
+  margin-right: 3px;
+}
+
 .sidebar-upgrades {
   color: #fff;
   height: 100%;
-  /* overflow-y: scroll; */
-  padding-right: 10px;
+  overflow-y: hidden;
+  padding-right: 15px;
+  padding: 5px 7px;
+  background: #4a313c;
+  border: 8px #5a424f solid;
+}
+
+.sidebar-upgrades-menu {
+  height: 100%;
+}
+
+.sidebar-upgrades-menu__list {
+  height: 100%;
+}
+
+.sidebar-upgrades-menu__list > div > div:first-child {
+  padding-bottom: 30px;
+}
+.sidebar-upgrades-menu__list > div > div:last-child > div {
+  background-color: rgba(39, 24, 32, 0.59);
 }
 
 .sidebar-upgrades-menu__name {
@@ -294,13 +332,14 @@ code {
 
 .sidebar-upgrades-menu-item {
   cursor: pointer;
-  border: 1px solid red;
+  border: 4px solid #7d616d;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   padding: 10px 5px;
   margin-bottom: 5px;
+  background: #5d434e;
 }
 
 .sidebar-upgrades-menu-item__left {
@@ -341,6 +380,8 @@ code {
 
 .sidebar-upgrades-menu-item-info span {
   position: relative;
+  padding-top: 5px;
+  padding-right: 2px;
 }
 
 .sidebar-upgrades-menu-item__blood {
@@ -350,11 +391,39 @@ code {
   top: 0;
 }
 
+.ui-button {
+  color: #fff;
+  border: 4px #5a424f solid;
+  background: #4a313c;
+  padding: 7px 19px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: .5s;
+  outline: none;
+}
+.ui-button:hover {
+  border: 4px #533d49 solid;
+  background: #412b34;
+}
+.ui-button:active {
+  border: 4px #3d2d36 solid;
+  background: #2e1f25;
+}
+.ui-button:disabled {
+  opacity: 0.5;
+}
 
 
 
 
-.rcs-custom-scroll {
+
+
+
+
+
+
+
+/* .rcs-custom-scroll {
   min-height: 0;
   min-width: 0; }
   .rcs-custom-scroll .rcs-outer-container {
@@ -409,4 +478,4 @@ code {
     height: calc(100% - 12px);
     margin-top: 6px;
     background-color: rgba(78, 183, 245, 0.7);
-    border-radius: 3px; }
+    border-radius: 3px; } */

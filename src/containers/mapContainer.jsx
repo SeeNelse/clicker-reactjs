@@ -46,6 +46,7 @@ class MapContainer extends Component {
       }
       item.blood = item.blood - (click ? this.state.victimsTypes['bloodPerClickType'+item.type] : this.state.autoCollectBlood);
       if (item.blood === 0) {
+        console.log(123);
         this.setState((state) => ({ // добавить мясо 
           victimMeat: this.state.victimMeat + item.meat + this.state.butcherBooty,
         }));
@@ -57,7 +58,6 @@ class MapContainer extends Component {
       bloodCounter: state.bloodCounter + allVictimsDamage,
     }));
   }
-
 
   // Функция охоты
   HandleGoHuntingClick = (notAutoHunting) => {
@@ -212,8 +212,10 @@ class MapContainer extends Component {
             IsReachMaxCount = { this.state.victims.length === this.state.victimSlotsCount }
           />
           <CounterBtn SuckBloodFromAllVictims = { this.SuckBloodFromAllVictims } HuntingState = { this.state.hunting }/>
-          <Counter CurrentCounter = { this.state.bloodCounter } CounterType = { true } />
-          <Counter CurrentCounter = { this.state.victimMeat } CounterType = { false } />
+          <div className="map-bot__counters">
+            <Counter CurrentCounter = { this.state.bloodCounter } CounterType = { true } />
+            <Counter CurrentCounter = { this.state.victimMeat } CounterType = { false } />
+          </div>
         </div>
       </div>
     );
