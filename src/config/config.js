@@ -5,7 +5,7 @@ export const CONFIG = {
     age: 26,
     blood: 2,
     type: 1,
-    meat: 1,
+    meat: 2,
   },
   globalUpgrades: [
     {

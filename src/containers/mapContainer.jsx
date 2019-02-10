@@ -34,29 +34,31 @@ class MapContainer extends Component {
   SuckBloodFromAllVictims = (click) => {
     let allVictimsDamage = 0;
     let victims = this.state.victims.filter((item, i) => {
-      if (item.blood < this.state.victimsTypes['bloodPerClickType'+item.type]) { // если дамага больше, чем хп у жертвы
-        allVictimsDamage = allVictimsDamage + item.blood;
+      // console.log(item);
+      if (item.blood < this.state.victimsTypes['bloodPerClickType'+item.type] || item.blood < this.state.autoCollectBlood) { // если дамага больше, чем хп у жертвы
+        allVictimsDamage += item.blood;
         this.setState((state) => ({
           victimMeat: this.state.victimMeat + item.meat + this.state.butcherBooty,
-        }), () => {
-          // console.log(this.state.victimMeat);
-        });;
+        }));
       } else {
-        allVictimsDamage = allVictimsDamage + (click ? this.state.victimsTypes['bloodPerClickType'+item.type] : this.state.autoCollectBlood);
+        allVictimsDamage += (click ? this.state.victimsTypes['bloodPerClickType'+item.type] : this.state.autoCollectBlood); // Если нет, то в переменную allVictimsDamage записывается общий дамаг
       }
       item.blood = item.blood - (click ? this.state.victimsTypes['bloodPerClickType'+item.type] : this.state.autoCollectBlood);
       if (item.blood === 0) {
-        console.log(123);
         this.setState((state) => ({ // добавить мясо 
-          victimMeat: this.state.victimMeat + item.meat + this.state.butcherBooty,
-        }));
+          victimMeat: state.victimMeat + state.victims[i].meat + state.butcherBooty,
+        }), () => {
+          
+        });
       }
       return item.blood > 0;
     });
+
     this.setState((state) => ({
       victims: victims,
       bloodCounter: state.bloodCounter + allVictimsDamage,
     }));
+
   }
 
   // Функция охоты
@@ -81,7 +83,7 @@ class MapContainer extends Component {
         this.setState({
           hunting: false,
           autoHunting: false,
-          victims: [...this.state.victims, {name: 'Вонючий Пётр', iconUrl: 'images/victims/victim-type-1.png', age: 24, blood: 200, type: 1, meat: 1,}],
+          victims: [...this.state.victims, {name: 'Вонючий Пётр', iconUrl: 'images/victims/victim-type-1.png', age: 24, blood: 3, type: 1, meat: 1,}],
         });
         return clearInterval(huntingTimer);
       }
