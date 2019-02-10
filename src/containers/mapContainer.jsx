@@ -34,7 +34,6 @@ class MapContainer extends Component {
   SuckBloodFromAllVictims = (click) => {
     let allVictimsDamage = 0;
     let victims = this.state.victims.filter((item, i) => {
-      // console.log(item);
       if (item.blood < this.state.victimsTypes['bloodPerClickType'+item.type] || item.blood < this.state.autoCollectBlood) { // если дамага больше, чем хп у жертвы
         allVictimsDamage += item.blood;
         this.setState((state) => ({
@@ -47,9 +46,7 @@ class MapContainer extends Component {
       if (item.blood === 0) {
         this.setState((state) => ({ // добавить мясо 
           victimMeat: state.victimMeat + state.victims[i].meat + state.butcherBooty,
-        }), () => {
-          
-        });
+        }));
       }
       return item.blood > 0;
     });
@@ -72,10 +69,15 @@ class MapContainer extends Component {
         timeToFinishHunting: 2000,
       });
     } else {
-      this.setState({ 
-        autoHunting: true,
-        timeToFinishHunting: 2000,
-      });
+      if (this.state.victimMeat >= 3) {
+        this.setState((state) => ({
+          autoHunting: true,
+          timeToFinishHunting: 2000,
+          victimMeat: state.victimMeat - 3, // сколько отнимать мяса за тик автоохоты
+        }));
+      } else {
+        return;
+      }
     }
     
     let huntingTimer = setInterval(() => {
