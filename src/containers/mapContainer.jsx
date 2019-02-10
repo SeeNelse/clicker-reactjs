@@ -17,12 +17,13 @@ class MapContainer extends Component {
       butcher: false,
       butcherBooty: 0,
       timeToFinishHunting: 0,
+      timeToFinishAutoHunting: 0,
       bloodCounter: 100, // кол-во крови
       victims: [CONFIG.defaultVictim],
       victimSlotsCount: 8,
       currentVictimMenu: null,
       autoCollectBlood: 0,
-      victimMeat: 0,
+      victimMeat: 3,
       victimsTypes: {
         bloodPerClickType1: 1,
         bloodPerClickType2: 1,
@@ -66,15 +67,17 @@ class MapContainer extends Component {
     if (notAutoHunting) {
       this.setState({ 
         hunting: true,
-        timeToFinishHunting: 2000,
+        timeToFinishHunting: 3000,
       });
     } else {
       if (this.state.victimMeat >= 3) {
         this.setState((state) => ({
           autoHunting: true,
-          timeToFinishHunting: 2000,
+          timeToFinishAutoHunting: 3000,
           victimMeat: state.victimMeat - 3, // сколько отнимать мяса за тик автоохоты
-        }));
+        }), () => {
+          console.log(this.state.timeToFinishAutoHunting)
+        });
       } else {
         return;
       }
@@ -89,7 +92,15 @@ class MapContainer extends Component {
         });
         return clearInterval(huntingTimer);
       }
-      this.setState({timeToFinishHunting: this.state.timeToFinishHunting - 1000});
+      if (notAutoHunting) {
+        this.setState({
+          timeToFinishHunting: this.state.timeToFinishHunting - 1000,
+        });
+      } else {
+        this.setState({
+          timeToFinishAutoHunting: this.state.timeToFinishAutoHunting - 1000,
+        });
+      }
     }, 1000);
   }
 
@@ -211,8 +222,8 @@ class MapContainer extends Component {
           <GoHuntingBtn 
             HandleGoHuntingClick = { this.HandleGoHuntingClick } 
             TimeToFinishHunting = { this.state.timeToFinishHunting } 
+            TimeToFinishAutoHunting = { this.state.timeToFinishAutoHunting } 
             HuntingState = { this.state.hunting } 
-            AutoHuntingState = { this.state.autoHunting }
             IsReachMaxCount = { this.state.victims.length === this.state.victimSlotsCount }
           />
           <CounterBtn SuckBloodFromAllVictims = { this.SuckBloodFromAllVictims } HuntingState = { this.state.hunting }/>
